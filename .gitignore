@@ -1,0 +1,23 @@
+﻿# --- Build outputs / caches ---
+dist/
+.angular/
+coverage/
+
+# --- Dependencies ---
+node_modules/
+
+# --- Logs ---
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# --- OS / Editor junk ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Temp files ---
+tmp/
+temp/
+*.tmp
