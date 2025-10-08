@@ -5,28 +5,21 @@
       Subscribe and get <strong>10% off</strong> your next order now.
       <span class="promo-note">
         Exclusions apply – <a class="promo-link" routerLink="terms">see T&Cs</a>
-        <!-- If you don't have a /terms route yet, use: href="/terms" -->
       </span>
     </span>
 
-    <!-- Optional: subscribe CTA -->
     <a class="promo-cta" routerLink="subscribe">Subscribe</a>
-
-    <button class="promo-close" (click)="showPromo = false" aria-label="Hide">×</button>
+    <button class="promo-close" type="button" (click)="showPromo = false" aria-label="Hide">×</button>
   </div>
 </div>
-
-
 
 <header class="topbar">
   <div class="topbar-inner container">
     <!-- Left: hamburger "home" -->
     <div class="left">
       <a class="icon-btn" routerLink="/" aria-label="Home">
-        <!-- Hamburger icon -->
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 6h18M3 12h18M3 18h18"
-                fill="none" stroke="currentColor" stroke-width="2"
+          <path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="2"
                 stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <span class="sr-only">Home</span>
@@ -36,10 +29,9 @@
     <!-- Center: brand/site name -->
     <a class="brand" routerLink="/">Bondi Fashion</a>
 
-    <!-- Right: account, search, cart -->
+    <!-- Right: account, search, cart, prefs pill -->
     <div class="actions">
       <a class="icon-btn" routerLink="/account" aria-label="Account">
-        <!-- User icon -->
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zM4 20c0-3.31 3.58-6 8-6s8 2.69 8 6"
                 fill="none" stroke="currentColor" stroke-width="2"
@@ -47,17 +39,14 @@
         </svg>
       </a>
 
-      <button class="icon-btn" (click)="toggleSearch()" aria-label="Search">
-        <!-- Search icon -->
+      <button class="icon-btn" type="button" (click)="toggleSearch()" aria-label="Search">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
-          <path d="M20 20l-3.5-3.5" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round"/>
+          <path d="M20 20l-3.5-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
 
       <a class="icon-btn cart-btn" routerLink="/cart" aria-label="Cart">
-        <!-- Cart icon -->
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="9" cy="21" r="1.8" />
           <circle cx="18" cy="21" r="1.8" />
@@ -66,6 +55,22 @@
         </svg>
         <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
       </a>
+
+      <!-- Preferences pill (now inside .actions) -->
+      <button
+        class="prefs-pill"
+        type="button"
+        (click)="togglePrefs()"
+        aria-haspopup="dialog"
+        [attr.aria-expanded]="showPrefs"
+        aria-controls="prefs-panel"
+      >
+        AUSTRALIAN DOLLAR
+        <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
     </div>
   </div>
 </header>
@@ -74,37 +79,21 @@
 <div class="search-row" *ngIf="showSearch">
   <div class="container search-inner">
     <input type="text" placeholder="Search products…" />
-    <button class="search-go" (click)="toggleSearch()">Close</button>
+    <button class="search-go" type="button" (click)="toggleSearch()">Close</button>
   </div>
 </div>
 
-<!-- … your existing actions … -->
-<a class="icon-btn cart-btn" routerLink="/cart" aria-label="Cart">
-  <!-- Cart icon SVG here -->
-  <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
-</a>
-
-<!-- Preferences pill (white bar with text) -->
-<button
-  class="prefs-pill"
-  (click)="showPromo()"
-  aria-haspopup="dialog"
-  [attr.aria-expanded]="showPrefs"
+<!-- Preferences panel (place right after the topbar so it can anchor under it) -->
+<div
+  class="prefs-panel"
+  *ngIf="showPrefs"
+  id="prefs-panel"
+  role="dialog"
+  aria-label="Site preferences"
 >
-  AUSTRALIAN DOLLAR
-  <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round" />
-  </svg>
-</button>
-
-<!-- Preferences panel -->
-<div class="prefs-panel" *ngIf="showPrefs" role="dialog" aria-label="Site preferences">
   <div class="prefs-header">
     <strong>Preferences</strong>
-    <button class="prefs-close" type="button" (click)="togglePrefs()">×</button>
-<button class="prefs-apply" type="button" (click)="applyPrefs()">Apply</button>
-
+    <button class="prefs-close" type="button" (click)="togglePrefs()" aria-label="Close">×</button>
   </div>
 
   <div class="prefs-row">
@@ -130,25 +119,22 @@
     </select>
   </div>
 
-  <button class="prefs-apply" (click)="applyPrefs()">Apply</button>
+  <button class="prefs-apply" type="button" (click)="applyPrefs()">Apply</button>
 </div>
 
 <nav class="category-bar">
   <div class="container">
     <ul class="menu">
       <li><a routerLink="/clearance" routerLinkActive="active">CLEARANCE SALE</a></li>
-
       <li class="has-submenu">
         <details>
           <summary>
             <span>PRE ORDER</span>
-            <!-- Arrow icon -->
             <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </summary>
-
           <ul class="submenu">
             <li><a routerLink="/pre-order/dresses">Dresses</a></li>
             <li><a routerLink="/pre-order/tops">Tops</a></li>
@@ -156,30 +142,25 @@
           </ul>
         </details>
       </li>
-
       <li><a routerLink="/gift-vouchers" routerLinkActive="active">GIFT VOUCHERS</a></li>
       <li><a routerLink="/testimonials" routerLinkActive="active">WHAT OUR CLIENTS SAY</a></li>
     </ul>
   </div>
 </nav>
 
-
 <!-- White promo ticker (clickable) -->
 <nav class="marquee" *ngIf="promoText">
-  <!-- We use two tracks back-to-back for a seamless infinite scroll -->
-  <a class="marquee__track" [href]="promoLink" aria-label="Go to New Arrivals">
+  <a class="marquee__track" [routerLink]="promoLink" aria-label="Go to New Arrivals">
     <span class="marquee__item" *ngFor="let _ of repeat">
-      {{ promoText }}  <strong></strong>
+      {{ promoText }}
     </span>
   </a>
-
-  <a class="marquee__track" [href]="promoLink" aria-hidden="true" tabindex="-1">
+  <a class="marquee__track" [routerLink]="promoLink" aria-hidden="true" tabindex="-1">
     <span class="marquee__item" *ngFor="let _ of repeat">
-      {{ promoText }} <strong></strong>
+      {{ promoText }}
     </span>
   </a>
 </nav>
-
 
 <header class="site-header">
   <div class="container">
