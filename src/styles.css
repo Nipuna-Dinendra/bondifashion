@@ -70,7 +70,7 @@
 }
 
 /* Three columns layout – center brand perfectly */
-.left, .actions { display: flex; align-items: center; gap: 8px; width: 140px; }
+.left, .actions { display: flex; align-items: center; gap: 8px; width: 50px; }
 .brand {
   flex: 1; text-align: center;
   font-weight: 700; letter-spacing: .3px; text-decoration: none; color: inherit;
@@ -80,7 +80,7 @@
 .icon-btn {
   appearance: none; border: 1px solid rgba(0,0,0,0.08);
   background: #fff; color: #0b1021;
-  width: 40px; height: 36px; border-radius: 12px;
+  width: 100px; height: 36px; border-radius: 12px;
   display: inline-flex; align-items: center; justify-content: center;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
@@ -94,7 +94,7 @@
 .cart-btn { position: relative; }
 .badge {
   position: absolute; top: -6px; right: -6px;
-  min-width: 18px; height: 18px; padding: 0 5px;
+  min-width: 20px; height: 18px; padding: 0 5px;
   border-radius: 9px; background: #ef4444; color: #fff;
   font-size: 11px; line-height: 18px; text-align: center; font-weight: 700;
 }
@@ -102,7 +102,7 @@
 /* Search row (optional) */
 .search-row { background: #fafafa; border-bottom: 1px solid #eee; }
 .search-inner {
-  display: flex; gap: 8px; padding: 10px 0; align-items: center;
+  display: flex; gap: 40px; padding: 10px 0; align-items: center;
 }
 .search-inner input {
   flex: 1; height: 40px; padding: 0 12px;
@@ -121,9 +121,78 @@
 
 /* Mobile tweaks */
 @media (max-width: 640px) {
-  .left, .actions { width: 112px; }
-  .brand { font-size: 16px; }
+  .left, .actions { width: 200px; }
+  .brand { font-size: 20px; }
 }
+
+
+
+/* --- White marquee bar --- */
+.marquee {
+  width: 100%;
+  margin: 0 auto;             /* center the 70%-wide bar */
+  background: #fff;
+  color: #0b1021;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+/* Remove the inner container constraint (not needed for the tracks)
+   If you DO keep a .container inside .marquee, don't limit its width,
+   or it will fight the track width. */
+/*
+.marquee .container { ... }  <-- delete this block
+*/
+
+/* Two identical tracks scroll left, one after the other */
+.marquee__track {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: 10px 16px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: inherit;
+
+  /* Do not shrink; set a minimum width for one loop */
+  flex: 0 0 auto;
+  min-width: var(--track-min);
+
+  /* Smooth infinite scroll: move by exactly one track width */
+  animation: marquee-scroll var(--marquee-speed) linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover (optional) */
+.marquee:hover .marquee__track { animation-play-state: paused; }
+
+.marquee__item {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0 2rem;            /* widen each “brick” of text */
+}
+
+/* Smooth continuous scroll */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }       /* start aligned */
+  100% { transform: translateX(-100%); }   /* shift by one full track width */
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+}
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  :root { --gap: 18px; }
+  .marquee__item { font-size: 10px; padding: 0 1rem; }
+}
+
 
 
 
@@ -135,6 +204,9 @@
   --primary: #22c55e;   /* green */
   --accent: #f59e0b;    /* amber */
   --link: #2563eb;      /* blue */
+  --track-min: 120%;          /* how wide each moving block is: 100–200% */
+  --marquee-speed: 80s;       /* lower = faster */
+  --gap: 28px; 
 }
 
 * { box-sizing: border-box; }
@@ -150,7 +222,7 @@ body {
 /* ---------- Layout ---------- */
 .container {
   max-width: 980px;
-  margin: 32px auto;
+  margin: 22px auto;
   padding: 0 20px;
 }
 
@@ -219,3 +291,172 @@ a { color: var(--link); }
   cursor: pointer;
 }
 .btn:active { transform: translateY(1px); }
+
+/* White category bar */
+.category-bar {
+  background: #fff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.category-bar .container {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+/* Horizontal menu */
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 18px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  align-items: center;
+  justify-content: center;  /* center the row */
+  flex-wrap: wrap;
+}
+
+.menu > li > a,
+.menu summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #0b1021;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: background .2s ease, transform .1s ease, color .2s ease;
+  cursor: pointer;
+}
+
+.menu > li > a:hover,
+.menu summary:hover {
+  background: #f5f7fb;
+  transform: translateY(-1px);
+}
+
+/* Active link highlight (via routerLinkActive) */
+.menu a.active {
+  color: #0b1021;
+  background: #e8f5e9;
+  outline: 2px solid #22c55e33;
+}
+
+/* Submenu using <details> */
+.has-submenu details {
+  position: relative;
+}
+.has-submenu summary {
+  list-style: none;  /* remove default marker */
+}
+.has-submenu summary::-webkit-details-marker {
+  display: none;     /* hide default arrow in Chromium */
+}
+
+/* Custom arrow */
+.has-submenu .arrow {
+  width: 16px; height: 16px;
+  transition: transform .15s ease;
+}
+.has-submenu details[open] .arrow { transform: rotate(180deg); }
+
+/* Dropdown panel */
+.submenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 220px;
+  padding: 8px;
+  margin: 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  z-index: 1000;
+}
+
+.submenu li a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #0b1021;
+  text-decoration: none;
+  font-weight: 600;
+  text-transform: none;      /* normal case inside submenu */
+  letter-spacing: 0.2px;
+}
+.submenu li a:hover { background: #f5f7fb; }
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  .menu { gap: 10px; }
+  .submenu { left: 0; transform: none; }
+}
+
+/* Make right side flexible to fit the pill */
+.actions { display: flex; align-items: center; gap: 8px; }
+
+/* White pill to the right of cart */
+.prefs-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: #0b1021;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  height: 36px; padding: 0 12px;
+  font-weight: 700; letter-spacing: .3px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform .1s ease, box-shadow .2s ease;
+  text-transform: uppercase;
+}
+.prefs-pill:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.prefs-pill .chev { width: 16px; height: 16px; }
+
+/* Dropdown panel anchored to topbar right */
+.prefs-panel {
+  position: absolute;
+  right: 16px;                     /* align to right edge */
+  top: 56px;                       /* just below a ~56px topbar; adjust to your bar height */
+  width: 320px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+  padding: 12px;
+  z-index: 1200;
+}
+
+.prefs-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 4px 10px; border-bottom: 1px solid #f0f0f0; margin-bottom: 8px;
+}
+.prefs-close {
+  background: transparent; border: 0; font-size: 18px; cursor: pointer;
+}
+
+.prefs-row {
+  display: grid; grid-template-columns: 110px 1fr; align-items: center;
+  gap: 8px; padding: 8px 4px;
+}
+.prefs-row label { font-weight: 600; }
+.prefs-row select {
+  width: 100%; height: 40px; border-radius: 10px; border: 1px solid #ddd; padding: 0 10px;
+}
+
+.prefs-apply {
+  width: 100%; height: 42px; margin-top: 8px;
+  border: 1px solid #0b1021; border-radius: 10px; background: #0b1021; color: #fff;
+  font-weight: 700; cursor: pointer;
+}
+
+/* Keep panel usable on small screens */
+@media (max-width: 640px) {
+  .prefs-panel { right: 8px; left: 8px; width: auto; }
+}

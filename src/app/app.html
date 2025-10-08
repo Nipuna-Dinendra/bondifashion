@@ -78,6 +78,107 @@
   </div>
 </div>
 
+<!-- … your existing actions … -->
+<a class="icon-btn cart-btn" routerLink="/cart" aria-label="Cart">
+  <!-- Cart icon SVG here -->
+  <span class="badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+</a>
+
+<!-- Preferences pill (white bar with text) -->
+<button
+  class="prefs-pill"
+  (click)="showPromo()"
+  aria-haspopup="dialog"
+  [attr.aria-expanded]="showPrefs"
+>
+  AUSTRALIAN DOLLAR
+  <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</button>
+
+<!-- Preferences panel -->
+<div class="prefs-panel" *ngIf="showPrefs" role="dialog" aria-label="Site preferences">
+  <div class="prefs-header">
+    <strong>Preferences</strong>
+    <button class="prefs-close" type="button" (click)="togglePrefs()">×</button>
+<button class="prefs-apply" type="button" (click)="applyPrefs()">Apply</button>
+
+  </div>
+
+  <div class="prefs-row">
+    <label for="ship">Ship to:</label>
+    <select id="ship" [(ngModel)]="selectedCountry">
+      <option *ngFor="let c of countries" [value]="c">{{ c }}</option>
+    </select>
+  </div>
+
+  <div class="prefs-row">
+    <label for="curr">Currency:</label>
+    <select id="curr" [(ngModel)]="selectedCurrency">
+      <option *ngFor="let cur of currencies" [value]="cur.code">
+        {{ cur.code }} — {{ cur.label }}
+      </option>
+    </select>
+  </div>
+
+  <div class="prefs-row">
+    <label for="lang">Language:</label>
+    <select id="lang" [(ngModel)]="selectedLanguage">
+      <option *ngFor="let l of languages" [value]="l">{{ l }}</option>
+    </select>
+  </div>
+
+  <button class="prefs-apply" (click)="applyPrefs()">Apply</button>
+</div>
+
+<nav class="category-bar">
+  <div class="container">
+    <ul class="menu">
+      <li><a routerLink="/clearance" routerLinkActive="active">CLEARANCE SALE</a></li>
+
+      <li class="has-submenu">
+        <details>
+          <summary>
+            <span>PRE ORDER</span>
+            <!-- Arrow icon -->
+            <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </summary>
+
+          <ul class="submenu">
+            <li><a routerLink="/pre-order/dresses">Dresses</a></li>
+            <li><a routerLink="/pre-order/tops">Tops</a></li>
+            <li><a routerLink="/pre-order/faq">Pre-order FAQ</a></li>
+          </ul>
+        </details>
+      </li>
+
+      <li><a routerLink="/gift-vouchers" routerLinkActive="active">GIFT VOUCHERS</a></li>
+      <li><a routerLink="/testimonials" routerLinkActive="active">WHAT OUR CLIENTS SAY</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<!-- White promo ticker (clickable) -->
+<nav class="marquee" *ngIf="promoText">
+  <!-- We use two tracks back-to-back for a seamless infinite scroll -->
+  <a class="marquee__track" [href]="promoLink" aria-label="Go to New Arrivals">
+    <span class="marquee__item" *ngFor="let _ of repeat">
+      {{ promoText }}  <strong></strong>
+    </span>
+  </a>
+
+  <a class="marquee__track" [href]="promoLink" aria-hidden="true" tabindex="-1">
+    <span class="marquee__item" *ngFor="let _ of repeat">
+      {{ promoText }} <strong></strong>
+    </span>
+  </a>
+</nav>
 
 
 <header class="site-header">
